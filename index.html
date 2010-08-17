@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Comment test</title>
+	<style type="text/css">
+		/*demo page css*/
+		body{ font: 62.5% "Trebuchet MS", sans-serif; margin: 50px;}
+		
+		.highlight {
+			background-color: #f44;
+		}
+		.highlight p {
+			background-color: #f44;
+		}
+		
+		div#commentbox {
+			position: absolute;
+			background-color: #f2f2f2;
+			border: 1px solid #ccc;
+			padding: 5px;
+		}
+		
+		span.marker {
+			background-color: #999;
+			font-size: 125%;
+		}
+	</style>	
+</head>
+<body>
+	<div id="article">
+	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nulla lectus, sagittis vel euismod sit amet, auctor ut ipsum. Maecenas sit amet dui nec lectus condimentum tempus nec in est. Nulla lobortis enim et sem faucibus molestie non vitae nibh. Curabitur libero libero, ultricies sit amet luctus non, vulputate ut ante. Curabitur condimentum nulla eget mi viverra vel commodo justo dapibus. Sed consectetur sapien ac lectus ultricies blandit. Ut eget tortor lectus. Vestibulum eu rhoncus metus. Fusce in sapien dolor, quis dictum nulla. Ut aliquet magna erat. Nam id nibh justo.</p>
+    <p>Duis leo augue, vulputate quis scelerisque ac, adipiscing quis dolor. Mauris ut augue nunc, sed consequat nisl. Proin sollicitudin venenatis turpis nec accumsan. Curabitur adipiscing euismod bibendum. Aliquam tempor hendrerit pellentesque. Suspendisse mattis dignissim tellus, quis venenatis nisl mattis quis. Nulla dapibus faucibus pulvinar. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas congue, diam at vestibulum pulvinar, tortor ipsum consequat erat, vel vestibulum ante libero at enim. Suspendisse leo lacus, interdum non convallis a, dignissim at massa. Duis eu convallis magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices vehicula augue, id pellentesque lacus luctus vitae.</p>
+    <p>Suspendisse congue imperdiet eros id ornare. Aliquam eget neque at neque consectetur suscipit vel laoreet eros. Integer auctor sagittis leo in viverra. Curabitur ac nisl quis odio pellentesque mollis vitae nec justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent imperdiet, arcu condimentum rutrum faucibus, erat diam hendrerit dolor, sit amet ultricies diam tellus vulputate diam. Nunc cursus tortor ut odio elementum fermentum sed et lectus. Praesent mollis mollis blandit. Duis interdum, neque ac mattis placerat, mi libero aliquet tellus, id ultricies nulla odio sed massa. Sed sit amet nisl augue. Nulla facilisi. Nulla facilisi. Nulla posuere pulvinar orci et fermentum. Nulla ornare venenatis nibh, id commodo nunc laoreet elementum. Donec consectetur condimentum nisi eget aliquam. Praesent mattis eleifend eros, in iaculis neque iaculis nec.</p>
+    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vivamus iaculis dapibus justo, ut auctor lorem pharetra quis. Duis suscipit pulvinar nunc a luctus. Quisque urna dolor, tincidunt id porttitor ac, condimentum ut magna. Mauris turpis diam, iaculis nec gravida ut, molestie nec lorem. Aenean consectetur vulputate pretium. Nullam sed odio nibh, non pharetra sem. Ut pellentesque neque ut erat fringilla nec luctus magna adipiscing. Vestibulum ac velit sed lacus lobortis sollicitudin. Nunc fermentum erat tristique orci eleifend ut tristique mauris viverra. Donec eu mauris augue. Praesent rutrum elementum velit eget blandit. Donec dolor dui, tempor vitae scelerisque a, malesuada ut tellus. Duis facilisis elit ut nunc rutrum tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis tortor dolor, gravida quis imperdiet nec, pellentesque in tellus. Donec dignissim libero sit amet felis scelerisque mollis. Duis placerat aliquam felis, eu interdum justo convallis eget.</p>
+    <p>Maecenas tortor justo, bibendum a lobortis et, tristique id arcu. Nam at elit ut orci pellentesque fermentum in id diam. Etiam ullamcorper leo vel sapien commodo vel faucibus mi ornare. Proin a nulla id augue dapibus pretium. Suspendisse potenti. Aenean velit diam, cursus et hendrerit quis, tincidunt sit amet purus. Nullam sodales vestibulum orci, in imperdiet dui dignissim eget. Nam faucibus dignissim ante vitae tristique. Fusce lobortis fermentum orci eu rhoncus. Integer tincidunt nisi eget felis consequat aliquam.</p>
+	</div>
+	<div id="commentbox" style="display:none;">
+		<a href="#" id="make-comment">Make Comment</a>
+		<div id="new-comment-form" style="display:none;">
+			<form id="comments-form" action="comments/new" method="post" accept-charset="utf-8">
+				<textarea name="Name" rows="8" cols="40"></textarea>				
+
+				<p><input type="submit" value="Add Comment"> <a href="#" id="cancel">Cancel</a></p>
+			</form>
+		</div>
+	</div>
+	<ol id="comments">
+		
+	</ol>
+
+	<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.wrapSelection.js"></script>
+	<script type="text/javascript" charset="utf-8">	
+		function clearSelection() {
+			var sel ;
+			if(document.selection && document.selection.empty){
+				document.selection.empty() ;
+			} 
+			else if(window.getSelection) {
+				sel=window.getSelection();
+				if(sel && sel.removeAllRanges)
+				sel.removeAllRanges() ;
+			}
+		}
+	
+		$(document).ready(function() {
+			$("div#article").mouseup(function(e) {			
+				$("div#new-comment-form").hide();
+				$("a#make-comment").show();
+				$("div#commentbox").css({'left': (e.pageX + 10) + "px", 'top': (e.pageY + 10) + "px"}).show();
+				
+				$("span.marker").remove();
+				
+				var range = $(this).getRangeAt();
+				if(!range.collapsed)
+				{				
+					//Insert temporary comment markers
+					start = $("<span>").append("{").addClass("marker").get(0);
+					texnode = range.startContainer.splitText(range.startOffset);
+					range.startContainer.parentNode.insertBefore( start,texnode);
+
+					end = $("<span>").append("}").addClass("marker").get(0);
+					texnode = range.endContainer.splitText(range.endOffset);
+					range.endContainer.parentNode.insertBefore( end,texnode);
+				
+					window.currentRange = range;
+					clearSelection();
+				}
+				//remove old markers
+
+				//$(this).wrapSelection({wrapRange: range}).addClass("highlight");
+			});
+			
+			$("form").submit(function() {
+				$("<li>").data("range", window.currentRange).append($("textarea").val()).appendTo("ol#comments").hover(function() {
+						if($(this).data("wrapclass"))
+						{
+							$("span." + $(this).data("wrapclass")).addClass("highlight");
+						}
+						else
+						{
+							var wrappers = $("div#article").wrapSelection({wrapRange: $(this).data("range")});
+							$(this).data("wrapclass", wrappers.get(0).className);
+							wrappers.addClass("highlight");
+						}
+					}, function() {
+						$("span." + $(this).data("wrapclass")).removeClass("highlight");
+					});
+				$("a#cancel").click();
+				return false;
+			});
+			
+			
+			
+			$("a#make-comment").click(function() {
+				$(this).hide();
+				$("div#new-comment-form").show();
+				return false;
+			});
+			
+			$("a#cancel").click(function () {
+				$("div#commentbox").hide();
+				$("span.marker").remove();
+				$("textarea").val("");
+				return false;
+			});
+			$(this).keypress(function() {
+				if(window.currentRange)
+				{
+				//	$(this).wrapSelection({wrapRange: currentRange}).addClass("highlight");
+				}
+			});
+		});
+	</script>
+</body>
+</html>
